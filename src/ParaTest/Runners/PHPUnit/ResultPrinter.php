@@ -176,6 +176,23 @@ class ResultPrinter
     }
 
     /**
+     * Print a "X" if a test died with a fatal error
+     * and add the message as a warning, so that it doesn't get lost
+     *
+     * @param ExecutableTest $test
+     */
+    public function printFatalErrorFeedback($test)
+    {
+        $errorOutput = $test->getStderr();
+        if (!$errorOutput) {
+            $errorOutput = $test->getStdout();
+        }
+
+        $this->addWarnings([$errorOutput]);
+        $this->printFeedbackItem('X');
+    }
+
+    /**
      * Prints a single "quick" feedback item and increments
      * the total number of processed cases and the column
      * position

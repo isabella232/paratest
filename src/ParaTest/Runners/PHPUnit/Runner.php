@@ -95,13 +95,10 @@ class Runner extends BaseRunner
             $this->pending = array();
         }
         if (static::PHPUNIT_FATAL_ERROR === $test->getExitCode()) {
-            $errorOutput = $test->getStderr();
-            if (!$errorOutput) {
-                $errorOutput = $test->getStdout();
-            }
-            throw new \Exception($errorOutput);
+            $this->printer->printFatalErrorFeedback($test);
+        } else {
+            $this->printer->printFeedback($test);
         }
-        $this->printer->printFeedback($test);
         if ($this->hasCoverage()) {
             $this->addCoverage($test);
         }
